@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary_background"
+    tools:context="com.zohdy.maxburger.activities.SignUpActivity">
+
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="false"
+        android:layout_marginTop="@dimen/margin_large"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo_with_text"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/flamabold"
+            android:hint="Name"
+            android:inputType="text"
+            android:textColor="@color/primary_text"
+            android:textCursorDrawable="@color/cursor_color"
+            android:textSize="24sp"/>
+
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/flamabold"
+            android:hint="Phone"
+            android:inputType="phone"
+            android:textColor="@color/primary_text"
+            android:textCursorDrawable="@color/cursor_color"
+            android:textSize="24sp"/>
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/flamabold"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/primary_text"
+            android:textCursorDrawable="@color/cursor_color"
+            android:textSize="24sp"
+            />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/flamabold"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="@color/primary_text"
+            android:textCursorDrawable="@color/cursor_color"
+            android:textSize="24sp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_sign_up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="@font/flamabold"
+        android:text="@string/sign_up"
+        android:textColor="@color/secondary_text"
+        android:textStyle="bold"
+        android:padding="@dimen/margin_large"
+        android:backgroundTint="@color/primary"/>
+
+</RelativeLayout>

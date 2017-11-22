@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    tools:context="com.zohdy.maxburger.activities.FoodActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout_food"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraint_layout_toolbar_food"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_large">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_layout_toolbar_food"
+                app:layout_constraintEnd_toEndOf="@id/constraint_layout_toolbar_food"
+                app:layout_constraintStart_toStartOf="@id/constraint_layout_toolbar_food"
+                app:layout_constraintTop_toTopOf="@id/constraint_layout_toolbar_food"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+            <TextView
+                android:id="@+id/tv_category_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:fontFamily="@font/flamabold"
+                android:text="Hamburgere"
+                android:textColor="@color/secondary_text"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_layout_toolbar_food"
+                app:layout_constraintEnd_toEndOf="@id/constraint_layout_toolbar_food"
+                app:layout_constraintStart_toStartOf="@id/constraint_layout_toolbar_food"
+                app:layout_constraintTop_toTopOf="@id/constraint_layout_toolbar_food"/>
+
+            <TextView
+                android:id="@+id/tv_category_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/flamabold"
+                android:text="Vores mange gode hamburgere."
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_layout_toolbar_food"
+                app:layout_constraintEnd_toEndOf="@id/constraint_layout_toolbar_food"
+                app:layout_constraintStart_toStartOf="@id/constraint_layout_toolbar_food"/>
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        android:id="@+id/material_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_small"
+        app:mt_hint="Hvad søger du...? "
+        app:mt_speechMode="false">
+
+    </com.mancj.materialsearchbar.MaterialSearchBar>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_food"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>
+

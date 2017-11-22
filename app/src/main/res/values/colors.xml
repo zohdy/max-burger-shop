@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#EA262F</color>
+    <color name="primary_light">#FD882F</color>
+    <color name="main_background">#E6E6E6</color>
+    <color name="secondary_background">#FFFFFF</color>
+    <color name="divider">#BFBFBF</color>
+    <color name="icon">#E6E6E6</color>
+    <color name="primary_text">#231F20</color>
+    <color name="secondary_text">#FFFFFF</color>
+    <color name="cursor_color">#000</color>
+
+
+    <color name="button_signup">#EA262F</color>
+    <color name="button_signup_active">#FD882F</color>
+
+</resources>

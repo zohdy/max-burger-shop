@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "367630580838",
+    "firebase_url": "https://maxburger-98431.firebaseio.com",
+    "project_id": "maxburger-98431",
+    "storage_bucket": "maxburger-98431.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367630580838:android:85e74608b8306472",
+        "android_client_info": {
+          "package_name": "com.zohdy.maxburger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367630580838-kmj4vovi87j48bg9g8mvmv4g42v93fp9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zohdy.maxburger",
+            "certificate_hash": "ad8fd8db35868ce2ce20414585f944cd398728ad"
+          }
+        },
+        {
+          "client_id": "367630580838-4mtsih06ajvhrnd109s82ngvb0rbj1hf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxZ1TLojE0VNGf4sCqRUC9akv2ocFT2ZE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367630580838-4mtsih06ajvhrnd109s82ngvb0rbj1hf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

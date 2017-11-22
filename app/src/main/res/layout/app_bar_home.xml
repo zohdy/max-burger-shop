@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.zohdy.maxburger.activities.HomeActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraint_layout_toolbar_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_large">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_layout_toolbar_category"
+                app:layout_constraintEnd_toEndOf="@id/constraint_layout_toolbar_category"
+                app:layout_constraintStart_toStartOf="@id/constraint_layout_toolbar_category"
+                app:layout_constraintTop_toTopOf="@id/constraint_layout_toolbar_category"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+            <TextView
+                android:id="@+id/tv_headline_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:fontFamily="@font/flamabold"
+                android:text="Her er vores store udvalg"
+                android:textColor="@color/secondary_text"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_layout_toolbar_category"
+                app:layout_constraintEnd_toEndOf="@id/constraint_layout_toolbar_category"
+                app:layout_constraintStart_toStartOf="@id/constraint_layout_toolbar_category"
+                app:layout_constraintTop_toTopOf="@id/constraint_layout_toolbar_category"/>
+
+            <TextView
+                android:id="@+id/tv_subline_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/flamabold"
+                android:text="Lad dig friste af Max' store udvalg af menuer, tilbehør og desserter."
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_layout_toolbar_category"
+                app:layout_constraintEnd_toEndOf="@id/constraint_layout_toolbar_category"
+                app:layout_constraintStart_toStartOf="@id/constraint_layout_toolbar_category"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_home"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:tint="@color/secondary_text"
+        android:backgroundTint="@color/primary"
+        app:srcCompat="@drawable/ic_shopping_cart_black_24dp"/>
+
+</android.support.design.widget.CoordinatorLayout>
