@@ -36,14 +36,6 @@
         <activity android:name=".activities.OrderActivity">
         </activity>
 
-        <service
-            android:name=".services.HandleOrderService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
-            </intent-filter>
-        </service>
-
         <activity android:name=".activities.OrderReadyActivity">
         </activity>
     </application>

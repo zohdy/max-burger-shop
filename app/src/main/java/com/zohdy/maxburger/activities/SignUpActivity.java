@@ -14,6 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.zohdy.maxburger.R;
+import com.zohdy.maxburger.common.Common;
+import com.zohdy.maxburger.interfaces.Constants;
 import com.zohdy.maxburger.models.User;
 
 /**
@@ -22,11 +24,17 @@ import com.zohdy.maxburger.models.User;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    EditText editTextName;
-    EditText editTextPhone;
-    EditText editTextPassword;
-    EditText editTextEmail;
-    Button buttonSignup;
+    private EditText editTextName;
+    private EditText editTextPhone;
+    private EditText editTextPassword;
+    private EditText editTextEmail;
+
+    private Button buttonSignup;
+
+    private FirebaseDatabase database;
+
+    private DatabaseReference table_user;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +47,17 @@ public class SignUpActivity extends AppCompatActivity {
         buttonSignup = findViewById(R.id.btn_sign_up);
         editTextEmail = findViewById(R.id.et_email);
 
-        // Initialize Firebase
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        // Reference to the users table
-        final DatabaseReference table_user = database.getReference("User");
+        database = FirebaseDatabase.getInstance();
+        table_user = database.getReference(Constants.FIREBASE_DB_TABLE_USER);
 
+        handleSignupButton();
+    }
+
+    private void handleSignupButton() {
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this);
+                progressDialog = new ProgressDialog(SignUpActivity.this);
                 progressDialog.setMessage("Please wait...");
                 progressDialog.show();
 
@@ -57,17 +67,23 @@ public class SignUpActivity extends AppCompatActivity {
                         // Check if key(phone) already exists in OrderDatabase
                         if(dataSnapshot.child(editTextPhone.getText().toString()).exists()) {
                             progressDialog.dismiss();
-                            Toast.makeText(SignUpActivity.this, "Phone number already registered", Toast.LENGTH_SHORT).show();
+                            Common.createToast(SignUpActivity.this, "Phone number already registered");
                         } else {
                             progressDialog.dismiss();
                             String phoneNumber = editTextPhone.getText().toString();
                             String name = editTextName.getText().toString();
                             String password = editTextPassword.getText().toString();
                             String email = editTextEmail.getText().toString();
-                            User newUser = new User(name, password, phoneNumber, email);
-                            table_user.child(editTextPhone.getText().toString()).setValue(newUser);
-                            Toast.makeText(SignUpActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
-                            finish();
+                            if(phoneNumber.isEmpty() || name.isEmpty() || password.isEmpty() || email.isEmpty()) {
+                                Common.createToast(SignUpActivity.this, "Alle felter skal udfyldes");
+                            } else {
+                                // Create new user based on text input values
+                                User newUser = new User(name, password, phoneNumber, email);
+                                // Add table to Firebase
+                                table_user.child(editTextPhone.getText().toString()).setValue(newUser);
+                                Common.createToast(SignUpActivity.this, "Registration successful!");
+                                finish();
+                            }
                         }
                     }
                     @Override

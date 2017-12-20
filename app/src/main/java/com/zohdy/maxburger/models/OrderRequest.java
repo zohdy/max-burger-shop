@@ -6,22 +6,20 @@ import java.util.List;
  * Created by peterzohdy on 13/11/2017.
  */
 
-public class Request {
-    private String name;
-    private String phone;
-    private String email;
+public class OrderRequest {
+    private String phoneNumber;
     private String totalAmount;
     private String specialInstructions;
     private List<Order> foodItems;
+
+    // TODO make enum
     private String status;
 
-    public Request() {
+    public OrderRequest() {
     }
 
-    public Request(String name, String phone, String email, String totalAmount, String specialInstructions, List<Order> foodItems) {
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
+    public OrderRequest(String phoneNumber, String totalAmount, String specialInstructions, List<Order> foodItems) {
+        this.phoneNumber = phoneNumber;
         this.totalAmount = totalAmount;
         this.foodItems = foodItems;
         this.specialInstructions = specialInstructions;
@@ -36,35 +34,20 @@ public class Request {
         this.specialInstructions = specialInstructions;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getTotalAmount() {

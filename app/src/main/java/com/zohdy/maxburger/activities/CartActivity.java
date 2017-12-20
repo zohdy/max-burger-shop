@@ -15,23 +15,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.zohdy.maxburger.R;
 import com.zohdy.maxburger.adapters.CartAdapter;
 import com.zohdy.maxburger.common.Common;
-import com.zohdy.maxburger.database.DBOpenHelper;
+import com.zohdy.maxburger.database.SQLiteHelper;
+import com.zohdy.maxburger.interfaces.Constants;
 import com.zohdy.maxburger.interfaces.OnDataChangeListener;
 import com.zohdy.maxburger.models.Order;
-import com.zohdy.maxburger.models.Request;
-import com.zohdy.maxburger.services.HandleOrderService;
+import com.zohdy.maxburger.models.OrderRequest;
 
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
+
+    private TextView textViewTotalAmount;
+
+    private Button buttonPlaceOrder;
+
+    private List<Order> cart;
+
+    private CartAdapter cartAdapter;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -39,14 +44,7 @@ public class CartActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference requests_table;
 
-    private TextView textViewTotalAmount;
-    private Button buttonPlaceOrder;
-
-    private List<Order> cart;
-    private CartAdapter cartAdapter;
-
-    private Request currentRequest;
-    Handler handler;
+    private OrderRequest currentOrderRequest;
 
 
     @Override
@@ -54,10 +52,8 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        handler = new Handler();
-
         database = FirebaseDatabase.getInstance();
-        requests_table = database.getReference("Requests");
+        requests_table = database.getReference(Constants.FIREBASE_DB_TABLE_ORDER_REQUESTS);
 
         recyclerView = findViewById(R.id.rv_cart);
         recyclerView.setHasFixedSize(true);
@@ -81,8 +77,8 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void loadFoodListOrder() {
-        DBOpenHelper dbOpenHelper = DBOpenHelper.newInstance(getApplicationContext());
-        cart = dbOpenHelper.getItemsInCart();
+        SQLiteHelper dbHelper = SQLiteHelper.getInstance(getApplicationContext());
+        cart = dbHelper.getItemsInCart();
 
         cartAdapter = new CartAdapter(cart, this);
         recyclerView.setAdapter(cartAdapter);
@@ -94,7 +90,7 @@ public class CartActivity extends AppCompatActivity {
         }
         textViewTotalAmount.setText(String.valueOf(totalPrice) + " kr");
 
-        // Reloads the adapter and re-calculates whenever it's activated from onClick method in cartAdapter
+        // Reloads the adapter and re-calculates whenever it's activated from onClick method (deleting an item from cart)
         cartAdapter.setOnDataChangeListener(new OnDataChangeListener() {
             @Override
             public void onDataChanged() {
@@ -104,63 +100,65 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void createRequest(String userInput) {
-        currentRequest = new Request(
-                Common.currenUser.getName(),
-                Common.currenUser.getPhoneNumber(),
-                Common.currenUser.getEmail(),
+        currentOrderRequest = new OrderRequest(
+                Common.currentUser.getPhoneNumber(),
                 textViewTotalAmount.getText().toString(),
                 userInput,
                 cart);
 
-        //Add to Firebase with currentTimeMillis as ID
-        requests_table.child(String.valueOf(System.currentTimeMillis())).setValue(currentRequest);
+        //Add to Firebase with currentTimeMillis as document ID
+        requests_table.child(String.valueOf(System.currentTimeMillis())).setValue(currentOrderRequest);
 
-        //Clear cart
-        DBOpenHelper dbOpenHelper = DBOpenHelper.newInstance(getApplicationContext());
-        dbOpenHelper.clearCart();
+        //Clear cart when request is made
+        SQLiteHelper dbHelper =  SQLiteHelper.getInstance(getApplicationContext());
+        dbHelper.clearCart();
 
+        // set badgecounter back to 0
         Common.badgeCounter = 0;
     }
 
     private void showAlertDialog() {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(CartActivity.this);
-        alertDialog.setTitle("Før du bestiller...");
-        alertDialog.setMessage("Er der noget vi skal tage højde for ifm. din ordre?");
 
+        // Create an editText inside the dialog
         final EditText editTextSpecialInstructions = new EditText(CartActivity.this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-
         editTextSpecialInstructions.setLayoutParams(layoutParams);
-        alertDialog.setView(editTextSpecialInstructions);
-        alertDialog.setIcon(R.drawable.ic_shopping_cart_black_24dp);
 
-        alertDialog.setPositiveButton("Bestil", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(CartActivity.this)
+        .setTitle("Før du bestiller...")
+        .setMessage("Er der noget vi skal tage højde for ifm. din ordre?")
+        .setView(editTextSpecialInstructions)
+        .setIcon(R.drawable.ic_shopping_cart_black_24dp)
+        .setPositiveButton("Bestil", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 createRequest(editTextSpecialInstructions.getText().toString());
-                Toast.makeText(CartActivity.this, "Tak - din bestilling er modtaget", Toast.LENGTH_SHORT).show();
+                Common.createToast(CartActivity.this,"Tak - din bestilling er modtaget" );
                 finish();
-                launchReadyOrderActivity();
-            }
-        });
 
-        alertDialog.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+
+                launchOrderReadyActivity();
+
+            }
+        })
+        .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });
-        alertDialog.show();
+        }).show();
     }
 
-    private void launchReadyOrderActivity() {
+
+    private void launchOrderReadyActivity() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                final Intent readyOrderIntent = new Intent(CartActivity.this, OrderReadyActivity.class);
-                startActivity(readyOrderIntent);
+                final Intent OrderReadyIntent = new Intent(CartActivity.this, OrderReadyActivity.class);
+                startActivity(OrderReadyIntent);
                 finish();
             }
         }, 10000);
     }
+
 }

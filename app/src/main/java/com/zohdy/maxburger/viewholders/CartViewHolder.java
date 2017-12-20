@@ -24,7 +24,8 @@ public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public TextView textViewCartName;
     public TextView textViewPrice;
     public TextView textViewCartCount;
-    public ImageView imageViewDeleteIcon;
+
+    private ImageView imageViewDeleteIcon;
 
     private ItemClickListener itemClickListener;
 

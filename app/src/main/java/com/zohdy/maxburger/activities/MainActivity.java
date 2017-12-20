@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.zohdy.maxburger.R;
-import com.zohdy.maxburger.database.DBOpenHelper;
+import com.zohdy.maxburger.database.SQLiteHelper;
 
 public class MainActivity extends AppCompatActivity {
-
 
     private Button buttonSignIn;
     private Button buttonSignUp;
@@ -21,8 +21,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initViews();
-        DBOpenHelper dbOpenHelper = DBOpenHelper.newInstance(MainActivity.this);
-        dbOpenHelper.clearCart();
+        initClickListeners();
+
+        // For offline sync
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        // Clear any items in shopping cart when app is restarted
+        SQLiteHelper dbHelper = SQLiteHelper.getInstance(MainActivity.this);
+        dbHelper.clearCart();
+    }
+
+
+
+    private void initClickListeners() {
 
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+
         buttonSignIn = findViewById(R.id.btn_sign_in);
         buttonSignUp = findViewById(R.id.btn_sign_up);
     }

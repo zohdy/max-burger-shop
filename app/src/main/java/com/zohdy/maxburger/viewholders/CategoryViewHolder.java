@@ -15,11 +15,14 @@ import com.zohdy.maxburger.interfaces.ItemClickListener;
 public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView textViewCategoryName;
+
     public ImageView imageViewCategory;
+
     private ItemClickListener itemClickListener;
 
     public CategoryViewHolder(View itemView) {
         super(itemView);
+
         textViewCategoryName = itemView.findViewById(R.id.tv_category_name);
         imageViewCategory = itemView.findViewById(R.id.iv_category_image);
         itemView.setOnClickListener(this);

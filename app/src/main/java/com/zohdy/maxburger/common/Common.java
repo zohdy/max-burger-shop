@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.zohdy.maxburger.interfaces.Constants;
 import com.zohdy.maxburger.models.User;
 
@@ -15,7 +14,7 @@ import com.zohdy.maxburger.models.User;
 public class Common {
 
     // Static variable to hold the current user
-    public static User currenUser;
+    public static User currentUser;
     public static int badgeCounter = 0;
 
 

@@ -10,7 +10,6 @@ public class Order {
     private String foodName;
     private String quantity;
     private String price;
-
     private int keyId;
 
     public Order() {

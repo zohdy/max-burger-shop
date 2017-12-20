@@ -7,11 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,72 +29,60 @@ import java.util.List;
 
 public class FoodActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
+    private TextView textViewCategoryDescription;
+    private TextView textViewCategoryName;
 
-    FirebaseDatabase database;
-    DatabaseReference foodTable;
-    String categoryId;
-    String categoryDescription;
-    String categoryName;
-    FirebaseRecyclerAdapter<Food, FoodViewHolder> recyclerAdapter;
-    TextView textViewCategoryDescription;
-    TextView textViewCategoryName;
+    private String categoryId;
+    private String categoryDescription;
+    private String categoryName;
 
-    FirebaseRecyclerAdapter<Food, FoodViewHolder> searchAdapter;
-    List<String> listSuggestions = new ArrayList<>();
-    MaterialSearchBar materialSearchBar;
+    private List<String> listSuggestions;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+
+    private FirebaseDatabase database;
+    private DatabaseReference foodTable;
+    private FirebaseRecyclerAdapter<Food, FoodViewHolder> foodListRecyclerAdapter;
+    private FirebaseRecyclerAdapter<Food, FoodViewHolder> searchBarRecyclerAdapter;
+
+    private MaterialSearchBar materialSearchBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food);
 
+        // Used for generating matches through the searchbar
+        listSuggestions = new ArrayList<>();
+
         initLayout();
         setupRecyclerview();
         setupSearchBar();
 
+
         database = FirebaseDatabase.getInstance();
         foodTable = database.getReference(Constants.FIREBASE_DB_TABLE_FOOD);
 
+        // Retrieve the extra Intent data from HomeActivity
         if(getIntent() != null) {
             categoryId = getIntent().getStringExtra(Constants.CATEGORY_ID);
             categoryDescription = getIntent().getStringExtra(Constants.CATEGORY_DESCRIPTION);
             categoryName = getIntent().getStringExtra(Constants.CATEGORY_NAME);
 
+            // Fill the textviews with the data passed through the Intent
             if (categoryName != null || categoryDescription != null) {
                 textViewCategoryName.setText(categoryName);
                 textViewCategoryDescription.setText(categoryDescription);
             }
 
+            // Load the adapter with the items responding to the categoryId
             if(!categoryId.isEmpty() && categoryId != null) {
                 setupFireBaseFoodlistAdapter(categoryId);
                 loadSearchSuggestions();
             }
         }
     }
-
-    // Get all the suggestions from firebase DB of that particular food category
-    private void loadSearchSuggestions() {
-        foodTable.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Food foodItem = snapshot.getValue(Food.class);
-                            if (foodItem != null) {
-                                // Add the names of the foods to arraylist listSuggestions
-                                listSuggestions.add(foodItem.getName());
-                            }}
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Common.createToast(getApplicationContext(), "Something went wrong... ");
-                        Common.createLog("Database error : " + databaseError.getMessage() + " " + databaseError.getDetails());
-                    }
-                });
-    }
-
 
     private void initLayout() {
         recyclerView = findViewById(R.id.recyclerview_food);
@@ -112,6 +97,30 @@ public class FoodActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
     }
 
+
+    /*********************************** SEARCH BAR ************************************************  */
+
+    // Get all the suggestions from firebase DB of that particular food category and store it in listSuggestions arraylist
+    private void loadSearchSuggestions() {
+        foodTable.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Food foodItem = snapshot.getValue(Food.class);
+                    if (foodItem != null) {
+                        // Add the names of the foods to arraylist listSuggestions
+                        listSuggestions.add(foodItem.getName());
+                    }}
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Common.createToast(getApplicationContext(), "Something went wrong... ");
+                Common.createLog("Database error : " + databaseError.getMessage() + " " + databaseError.getDetails());
+            }
+        });
+    }
+
     private void setupSearchBar() {
         materialSearchBar.setLastSuggestions(listSuggestions);
         materialSearchBar.setCardViewElevation(10);
@@ -120,15 +129,20 @@ public class FoodActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
+
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+
                 List<String> updatedSuggestions = new ArrayList<>();
 
+                // check if user input matches any of the items in listSuggestions, if so, add them to updatedSuggestions arraylisted
                 for(String search : listSuggestions) {
                     if(search.toLowerCase().contains(materialSearchBar.getText().toLowerCase())) {
                         updatedSuggestions.add(search);
                     }
                 }
+
+                // set the searchbar to display the items in updatedSuggestions arraylist
                 materialSearchBar.setLastSuggestions(updatedSuggestions);
             }
             @Override
@@ -138,12 +152,15 @@ public class FoodActivity extends AppCompatActivity {
         });
         materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
+
+            // Whenever a new search is performed, set the adapter to display the correct item
             public void onSearchStateChanged(boolean enabled) {
                 if(!enabled) {
-                    recyclerView.setAdapter(recyclerAdapter);
+                    recyclerView.setAdapter(foodListRecyclerAdapter);
                 }
             }
 
+            // init the searchAdapter when the match is confirmed by the user
             @Override
             public void onSearchConfirmed(CharSequence text) {
                 setupFirebaseSearchAdapter(text);
@@ -158,7 +175,7 @@ public class FoodActivity extends AppCompatActivity {
 
     // Loads a single food item based on the user search and displays them in a recyclerview
     private void setupFirebaseSearchAdapter(CharSequence text) {
-        searchAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(
+        searchBarRecyclerAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(
                 Food.class,
                 R.layout.item_food,
                 FoodViewHolder.class,
@@ -173,23 +190,26 @@ public class FoodActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view, int position) {
                         Intent foodDetail = new Intent(FoodActivity.this, FoodDetailActivity.class);
-                        foodDetail.putExtra(Constants.FOOD_ID, searchAdapter.getRef(position).getKey());
+                        foodDetail.putExtra(Constants.FOOD_ID, searchBarRecyclerAdapter.getRef(position).getKey());
                         startActivity(foodDetail);
                     }
                 });
             }
         };
-        recyclerView.setAdapter(searchAdapter);
+        recyclerView.setAdapter(searchBarRecyclerAdapter);
     }
+
+
+    /*********************************** SEARCH BAR FINISH *****************************************  */
 
 
     // Loads all the food items in the chosen category from db and displays them in a recyclerview
     private void setupFireBaseFoodlistAdapter(String categoryId) {
-        recyclerAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(
+        foodListRecyclerAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(
                 Food.class,
                 R.layout.item_food,
                 FoodViewHolder.class,
-                //Query (select * from FoodTable where menuId is equal to the categoryId passed in)
+                // Display the items where menuId in foodTable is identical to the categoryId passed in from the intent extra
                 foodTable.orderByChild("menuId").equalTo(categoryId)) {
             @Override
             protected void populateViewHolder(FoodViewHolder foodViewHolder, final Food food, int position) {
@@ -201,12 +221,12 @@ public class FoodActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view, int position) {
                         Intent foodDetail = new Intent(FoodActivity.this, FoodDetailActivity.class);
-                        foodDetail.putExtra(Constants.FOOD_ID, recyclerAdapter.getRef(position).getKey());
+                        foodDetail.putExtra(Constants.FOOD_ID, foodListRecyclerAdapter.getRef(position).getKey());
                         startActivity(foodDetail);
                     }
                 });
             }
         };
-        recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setAdapter(foodListRecyclerAdapter);
     }
 }

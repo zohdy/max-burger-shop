@@ -24,25 +24,31 @@ import java.io.IOException;
 
 public class OrderReadyActivity extends AppCompatActivity {
 
-    Button buttonOrderReady;
-    MediaPlayer mediaPlayer;
-    TextView textViewOrderReady;
-    ImageView imageViewBurgerGif;
+    private TextView textViewOrderReady;
+
+    private Button buttonOrderReady;
+
+    private ImageView imageViewBurgerGif;
+
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_ready);
 
-        mediaPlayer = new MediaPlayer();
-        imageViewBurgerGif = findViewById(R.id.iv_burger_gif);
-        buttonOrderReady = findViewById(R.id.btn_order_ready);
-        textViewOrderReady = findViewById(R.id.tv_order_ready);
-        textViewOrderReady.setText("Din mad er klar " + Common.currenUser.getName());
-
+        initLayout();
         playAlarmSound();
         handleOrderReadyButton();
         displayGifImage();
+    }
+
+    private void initLayout() {
+
+        imageViewBurgerGif = findViewById(R.id.iv_burger_gif);
+        buttonOrderReady = findViewById(R.id.btn_order_ready);
+        textViewOrderReady = findViewById(R.id.tv_order_ready);
+        textViewOrderReady.setText("Din mad er klar " + Common.currentUser.getName());
     }
 
     private void displayGifImage() {
@@ -53,6 +59,8 @@ public class OrderReadyActivity extends AppCompatActivity {
     }
 
     private void playAlarmSound() {
+
+        mediaPlayer = new MediaPlayer();
         Uri myUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
@@ -82,5 +90,11 @@ public class OrderReadyActivity extends AppCompatActivity {
             mediaPlayer.release();
             mediaPlayer = null;
         }
+    }
+
+    @Override
+    protected void onStop() {
+        stopPlaying();
+        super.onStop();
     }
 }

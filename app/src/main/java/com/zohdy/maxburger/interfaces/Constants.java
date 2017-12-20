@@ -6,28 +6,22 @@ package com.zohdy.maxburger.interfaces;
 
 public interface Constants {
 
+
     // Table Names in Firebase DB
     String FIREBASE_DB_TABLE_FOOD = "Food";
     String FIREBASE_DB_TABLE_USER = "User";
     String FIREBASE_DB_TABLE_CATEGORY = "Category";
-    String FIREBASE_DB_TABLE_REQUESTS = "Requests";
+    String FIREBASE_DB_TABLE_ORDER_REQUESTS = "OrderRequest";
 
-    //Constants for identifying table and columns
+    // Static names in SQLite DB
+    String SQLITE_DB_NAME = "maxburger.db";
     String DB_TABLE_ORDER_DETAILS = "orderdetails";
     String DB_COLUMN_KEY_ID = "_id";
     String DB_COLUMN_FOOD_ID = "food_id";
     String DB_COLUMN_FOOD_NAME = "food_name";
     String DB_COLUMN_FOOD_PRICE = "food_price";
     String DB_COLUMN_FOOD_QUANTITY = "quantity";
-    String[] DB_ALL_COLUMNS = {
-            Constants.DB_COLUMN_FOOD_ID,
-            Constants.DB_COLUMN_FOOD_NAME,
-            Constants.DB_COLUMN_FOOD_PRICE,
-            Constants.DB_COLUMN_FOOD_QUANTITY
-    };
 
-    String NOTIFICATIONS_CHANNEL_ID = "channel_01";
-    CharSequence NOTIFICATIONS_CHANNEL_NAME = "Channel 01";
 
     String CATEGORY_NAME = "category_name";
     String CATEGORY_DESCRIPTION = "category_description";
