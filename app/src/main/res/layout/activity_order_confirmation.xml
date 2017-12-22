@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.zohdy.maxburger.activities.OrderConfirmationActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_order_confirmation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:theme="@style/ToolbarStyle"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_confirmation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/flamabold"
+        android:gravity="top"
+        android:lineSpacingExtra="1sp"
+        android:paddingRight="@dimen/margin_x_large"
+        android:paddingStart="@dimen/margin_x_large"
+        android:paddingTop="78dp"
+        android:text="Tak Peter!\n\nVi har modtaget din ordre!"
+        android:textColor="@color/primary"
+        android:textSize="36sp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_done_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

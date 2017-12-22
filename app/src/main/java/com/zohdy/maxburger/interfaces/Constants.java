@@ -12,6 +12,8 @@ public interface Constants {
     String FIREBASE_DB_TABLE_USER = "User";
     String FIREBASE_DB_TABLE_CATEGORY = "Category";
     String FIREBASE_DB_TABLE_ORDER_REQUESTS = "OrderRequest";
+    String FIREBASE_DB_TABLE_ORDER_HISTORY = "OrderHistory";
+
 
     // Static names in SQLite DB
     String SQLITE_DB_NAME = "maxburger.db";
@@ -23,9 +25,12 @@ public interface Constants {
     String DB_COLUMN_FOOD_QUANTITY = "quantity";
 
 
+    String ORDER_REQUEST_OBJECT = "order_request_object";
     String CATEGORY_NAME = "category_name";
     String CATEGORY_DESCRIPTION = "category_description";
     String CATEGORY_ID = "category_id";
     String FOOD_ID = "food_id";
     String LOG = "com.zohyd.maxburger.log";
+    String ORDER_ID = "order_id";
+    String ORDER_READY_ID = "order_ready_id";
 }

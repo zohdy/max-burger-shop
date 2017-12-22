@@ -48,6 +48,7 @@ public class SignInActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         table_user = database.getReference(Constants.FIREBASE_DB_TABLE_USER);
 
+
         handleSignInButton();
     }
 
@@ -66,10 +67,10 @@ public class SignInActivity extends AppCompatActivity {
                         // Check if user exist in database
                         if(dataSnapshot.child(editTextPhoneNumber.getText().toString()).exists()) {
 
-                            progressDialog.dismiss();
-
                             //Get user values from database and set values as object 'user'
                             User user = dataSnapshot.child(editTextPhoneNumber.getText().toString()).getValue(User.class);
+                            user.setPhoneNumber(editTextPhoneNumber.getText().toString());
+                            progressDialog.dismiss();
 
                             // check if user objects password matches with user input
                             if(user.getPassword().equals(editTextPassWord.getText().toString())) {

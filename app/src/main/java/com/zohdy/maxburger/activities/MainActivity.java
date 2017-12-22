@@ -9,6 +9,8 @@ import android.widget.Button;
 import com.google.firebase.database.FirebaseDatabase;
 import com.zohdy.maxburger.R;
 import com.zohdy.maxburger.database.SQLiteHelper;
+import com.zohdy.maxburger.interfaces.Constants;
+import com.zohdy.maxburger.services.OrderService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,18 +22,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initViews();
-        initClickListeners();
-
         // For offline sync
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        initViews();
+        initClickListeners();
 
         // Clear any items in shopping cart when app is restarted
         SQLiteHelper dbHelper = SQLiteHelper.getInstance(MainActivity.this);
         dbHelper.clearCart();
+
+        startOrderService();
     }
 
 
+    private void startOrderService() {
+        Intent orderServiceIntent = new Intent(MainActivity.this, OrderService.class);
+        startService(orderServiceIntent);
+    }
 
     private void initClickListeners() {
 

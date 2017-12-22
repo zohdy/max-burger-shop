@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/primary"
             android:fontFamily="@font/flamabold"
-            android:hint="Name"
+            android:hint="Fulde Navn"
             android:inputType="text"
             android:textColor="@color/primary_text"
             android:textCursorDrawable="@color/cursor_color"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/primary"
             android:fontFamily="@font/flamabold"
-            android:hint="Phone"
+            android:hint="Tlf Nr."
             android:inputType="phone"
             android:textColor="@color/primary_text"
             android:textCursorDrawable="@color/cursor_color"
@@ -85,13 +85,13 @@
         android:id="@+id/btn_sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_small"
         android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_small"
+        android:backgroundTint="@color/primary"
         android:fontFamily="@font/flamabold"
-        android:text="@string/sign_up"
-        android:textColor="@color/secondary_text"
-        android:textStyle="bold"
         android:padding="@dimen/margin_large"
-        android:backgroundTint="@color/primary"/>
+        android:text="Opret "
+        android:textColor="@color/secondary_text"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

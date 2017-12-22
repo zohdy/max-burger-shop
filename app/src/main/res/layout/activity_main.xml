@@ -35,10 +35,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:padding="@dimen/margin_large"
             android:backgroundTint="@color/primary"
             android:fontFamily="@font/flamabold"
-            android:text="@string/sign_up"
+            android:padding="@dimen/margin_large"
+            android:text="Ny Kunde?"
             android:textColor="@color/secondary_text"
             android:textStyle="bold"/>
 
@@ -48,10 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:padding="@dimen/margin_large"
             android:backgroundTint="@color/primary_light"
             android:fontFamily="@font/flamabold"
-            android:text="@string/sign_in"
+            android:padding="@dimen/margin_large"
+            android:text="Log Ind"
             android:textColor="@color/secondary_text"
             android:textStyle="bold"/>
     </LinearLayout>

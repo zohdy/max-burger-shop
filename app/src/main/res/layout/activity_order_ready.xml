@@ -26,41 +26,30 @@
     <TextView
         android:id="@+id/tv_order_ready"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_weight="0.5"
-        android:fontFamily="@font/flamabold"
-        android:text="Din mad er klar Peter Zohdy!"
-        android:textColor="@color/primary_text"
-        android:textSize="24sp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="90dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_weight="1"
-        android:fontFamily="@font/flamaregular"
-        android:gravity="center"
-        android:text="Henvend dig hos en af vores medarbejdere i skranken :-)"
+        android:fontFamily="@font/flamabold"
+        android:lineSpacingExtra="8sp"
+        android:text=" Kære Peter Zohdy\n Din mad med ordre nr.\n 10101001010 er klar!"
         android:textColor="@color/primary_text"
         android:textSize="24sp"/>
-
 
     <ImageView
         android:id="@+id/iv_burger_gif"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
-        app:srcCompat="@drawable/ic_logo"/>
+        android:layout_weight="1"
+        android:src="@drawable/burger_gif"/>
+
 
     <Button
         android:id="@+id/btn_order_ready"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/margin_medium"
         android:backgroundTint="@color/primary"

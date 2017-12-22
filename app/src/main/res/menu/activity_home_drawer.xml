@@ -13,17 +13,17 @@
             android:id="@+id/nav_cart"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:iconTint="@color/primary"
-            android:title="Cart"/>
+            android:title="Kurv"/>
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_access_time_black_24dp"
             android:iconTint="@color/primary"
-            android:title="Orders"/>
+            android:title="Ordre"/>
         <item
             android:id="@+id/nav_log_out"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:iconTint="@color/primary"
-            android:title="Sign Out"/>
+            android:title="Logout"/>
 
     </group>
 </menu>

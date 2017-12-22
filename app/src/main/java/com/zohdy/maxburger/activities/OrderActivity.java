@@ -60,7 +60,6 @@ public class OrderActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerAdapter);
     }
 
-    // TODO convert to Enum
     private String convertStatus(String status) {
         if (status.equals("0")) {
             return "Igang";

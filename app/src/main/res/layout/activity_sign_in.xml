@@ -35,12 +35,12 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/primary"
             android:fontFamily="@font/flamabold"
-            android:hint="@string/phone_hint"
+            android:hint="Tlf Nr."
             android:inputType="phone"
             android:text="26719945"
-            android:textCursorDrawable="@color/cursor_color"
             android:textColor="@color/primary_text"
             android:textColorHint="@color/secondary_text"
+            android:textCursorDrawable="@color/cursor_color"
             android:textSize="@dimen/text_large"/>
 
         <EditText
@@ -62,14 +62,14 @@
         android:id="@+id/btn_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_large"
-        android:layout_margin="@dimen/margin_small"
         android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_small"
+        android:backgroundTint="@color/primary_light"
         android:fontFamily="@font/flamabold"
-        android:text="@string/sign_in"
-        android:textSize="@dimen/margin_medium"
+        android:padding="@dimen/margin_large"
+        android:text="Log In"
         android:textColor="@color/secondary_text"
-        android:textStyle="bold"
-        android:backgroundTint="@color/primary_light"/>
+        android:textSize="@dimen/margin_medium"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

@@ -2,7 +2,6 @@ package com.zohdy.maxburger.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,6 +23,7 @@ import com.zohdy.maxburger.interfaces.Constants;
 import com.zohdy.maxburger.interfaces.OnDataChangeListener;
 import com.zohdy.maxburger.models.Order;
 import com.zohdy.maxburger.models.OrderRequest;
+import com.zohdy.maxburger.services.OrderService;
 
 import java.util.List;
 
@@ -42,9 +41,10 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
 
     private FirebaseDatabase database;
-    private DatabaseReference requests_table;
+    private DatabaseReference orderRequestTable;
 
     private OrderRequest currentOrderRequest;
+    private String orderId;
 
 
     @Override
@@ -53,7 +53,7 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         database = FirebaseDatabase.getInstance();
-        requests_table = database.getReference(Constants.FIREBASE_DB_TABLE_ORDER_REQUESTS);
+        orderRequestTable = database.getReference(Constants.FIREBASE_DB_TABLE_ORDER_REQUESTS);
 
         recyclerView = findViewById(R.id.rv_cart);
         recyclerView.setHasFixedSize(true);
@@ -107,7 +107,8 @@ public class CartActivity extends AppCompatActivity {
                 cart);
 
         //Add to Firebase with currentTimeMillis as document ID
-        requests_table.child(String.valueOf(System.currentTimeMillis())).setValue(currentOrderRequest);
+        orderId = String.valueOf(System.currentTimeMillis());
+        orderRequestTable.child(orderId).setValue(currentOrderRequest);
 
         //Clear cart when request is made
         SQLiteHelper dbHelper =  SQLiteHelper.getInstance(getApplicationContext());
@@ -133,12 +134,9 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 createRequest(editTextSpecialInstructions.getText().toString());
-                Common.createToast(CartActivity.this,"Tak - din bestilling er modtaget" );
+                Intent orderConfirmationActivity = new Intent(CartActivity.this, OrderConfirmationActivity.class);
+                startActivity(orderConfirmationActivity);
                 finish();
-
-
-                launchOrderReadyActivity();
-
             }
         })
         .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
@@ -148,17 +146,6 @@ public class CartActivity extends AppCompatActivity {
             }
         }).show();
     }
-
-
-    private void launchOrderReadyActivity() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                final Intent OrderReadyIntent = new Intent(CartActivity.this, OrderReadyActivity.class);
-                startActivity(OrderReadyIntent);
-                finish();
-            }
-        }, 10000);
-    }
-
 }
+
+

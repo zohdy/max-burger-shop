@@ -35,8 +35,16 @@
         </activity>
         <activity android:name=".activities.OrderActivity">
         </activity>
-
         <activity android:name=".activities.OrderReadyActivity">
+        </activity>
+
+        <service
+            android:name=".services.OrderService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
+        <activity android:name=".activities.OrderConfirmationActivity">
         </activity>
     </application>
 
