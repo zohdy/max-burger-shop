@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.zohdy.maxburger.R;
-import com.zohdy.maxburger.interfaces.ItemClickListener;
 
 /**
  * Created by peterzohdy on 14/11/2017.

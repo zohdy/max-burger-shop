@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    app:cardElevation="4dp"
+    android:layout_margin="2dp"
     app:cardCornerRadius="@dimen/margin_medium"
-    android:layout_margin="2dp">
+    app:cardElevation="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"

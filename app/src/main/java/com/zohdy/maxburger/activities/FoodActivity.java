@@ -20,38 +20,33 @@ import com.squareup.picasso.Picasso;
 import com.zohdy.maxburger.R;
 import com.zohdy.maxburger.common.Common;
 import com.zohdy.maxburger.interfaces.Constants;
-import com.zohdy.maxburger.interfaces.ItemClickListener;
+import com.zohdy.maxburger.interfaces.RecyclerViewItemClickListener;
 import com.zohdy.maxburger.models.Food;
 import com.zohdy.maxburger.viewholders.FoodViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.v7.widget.RecyclerView.*;
+
 public class FoodActivity extends AppCompatActivity {
 
     private TextView textViewCategoryDescription;
     private TextView textViewCategoryName;
-
-    private String categoryId;
-    private String categoryDescription;
-    private String categoryName;
-
     private List<String> listSuggestions;
-
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-
-    private FirebaseDatabase database;
     private DatabaseReference foodTable;
     private FirebaseRecyclerAdapter<Food, FoodViewHolder> foodListRecyclerAdapter;
     private FirebaseRecyclerAdapter<Food, FoodViewHolder> searchBarRecyclerAdapter;
-
     private MaterialSearchBar materialSearchBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        foodTable = database.getReference(Constants.FIREBASE_DB_TABLE_FOOD);
 
         // Used for generating matches through the searchbar
         listSuggestions = new ArrayList<>();
@@ -61,14 +56,12 @@ public class FoodActivity extends AppCompatActivity {
         setupSearchBar();
 
 
-        database = FirebaseDatabase.getInstance();
-        foodTable = database.getReference(Constants.FIREBASE_DB_TABLE_FOOD);
 
         // Retrieve the extra Intent data from HomeActivity
         if(getIntent() != null) {
-            categoryId = getIntent().getStringExtra(Constants.CATEGORY_ID);
-            categoryDescription = getIntent().getStringExtra(Constants.CATEGORY_DESCRIPTION);
-            categoryName = getIntent().getStringExtra(Constants.CATEGORY_NAME);
+            String categoryId = getIntent().getStringExtra(Constants.CATEGORY_ID);
+            String categoryDescription = getIntent().getStringExtra(Constants.CATEGORY_DESCRIPTION);
+            String categoryName = getIntent().getStringExtra(Constants.CATEGORY_NAME);
 
             // Fill the textviews with the data passed through the Intent
             if (categoryName != null || categoryDescription != null) {
@@ -77,7 +70,7 @@ public class FoodActivity extends AppCompatActivity {
             }
 
             // Load the adapter with the items responding to the categoryId
-            if(!categoryId.isEmpty() && categoryId != null) {
+            if(!categoryId.isEmpty()) {
                 setupFireBaseFoodlistAdapter(categoryId);
                 loadSearchSuggestions();
             }
@@ -93,7 +86,7 @@ public class FoodActivity extends AppCompatActivity {
 
     private void setupRecyclerview() {
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
     }
 
@@ -186,7 +179,7 @@ public class FoodActivity extends AppCompatActivity {
                 foodViewHolder.textViewFood.setText(food.getName());
                 Picasso.with(getBaseContext()).load(food.getImage()).into(foodViewHolder.imageViewFood);
 
-                foodViewHolder.setItemClickListener(new ItemClickListener() {
+                foodViewHolder.setRecyclerViewItemClickListener(new RecyclerViewItemClickListener() {
                     @Override
                     public void onClick(View view, int position) {
                         Intent foodDetail = new Intent(FoodActivity.this, FoodDetailActivity.class);
@@ -198,8 +191,6 @@ public class FoodActivity extends AppCompatActivity {
         };
         recyclerView.setAdapter(searchBarRecyclerAdapter);
     }
-
-
     /*********************************** SEARCH BAR FINISH *****************************************  */
 
 
@@ -217,7 +208,7 @@ public class FoodActivity extends AppCompatActivity {
                 Picasso.with(getBaseContext()).load(food.getImage())
                         .into(foodViewHolder.imageViewFood);
 
-                foodViewHolder.setItemClickListener(new ItemClickListener() {
+                foodViewHolder.setRecyclerViewItemClickListener(new RecyclerViewItemClickListener() {
                     @Override
                     public void onClick(View view, int position) {
                         Intent foodDetail = new Intent(FoodActivity.this, FoodDetailActivity.class);

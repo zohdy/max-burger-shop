@@ -3,7 +3,6 @@ package com.zohdy.maxburger.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,6 @@ public class OrderRequest implements Parcelable {
 
 
     //**************************** Methods related to Parceable ************************* //
-
     @Override
     public int describeContents() {
         return 0;
@@ -56,7 +54,6 @@ public class OrderRequest implements Parcelable {
         in.readTypedList(foodItems, Order.CREATOR);
         this.status = in.readString();
     }
-
     //**************************** Parceable methods ending ******************************** //
 
 
@@ -70,7 +67,6 @@ public class OrderRequest implements Parcelable {
         this.foodItems = foodItems;
         this.status = "0";
     }
-
 
 
     public String getStatus() {

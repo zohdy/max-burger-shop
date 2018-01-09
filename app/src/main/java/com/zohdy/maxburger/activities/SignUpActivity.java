@@ -28,12 +28,8 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText editTextPhone;
     private EditText editTextPassword;
     private EditText editTextEmail;
-
     private Button buttonSignup;
-
-    private FirebaseDatabase database;
-
-    private DatabaseReference table_user;
+    private DatabaseReference tableUser;
     private ProgressDialog progressDialog;
 
     @Override
@@ -41,16 +37,20 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        initViews();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        tableUser = database.getReference(Constants.FIREBASE_DB_TABLE_USER);
+
+        handleSignupButton();
+    }
+
+    private void initViews() {
         editTextName = findViewById(R.id.et_name);
         editTextPhone = findViewById(R.id.et_phone);
         editTextPassword = findViewById(R.id.et_password);
         buttonSignup = findViewById(R.id.btn_sign_up);
         editTextEmail = findViewById(R.id.et_email);
-
-        database = FirebaseDatabase.getInstance();
-        table_user = database.getReference(Constants.FIREBASE_DB_TABLE_USER);
-
-        handleSignupButton();
     }
 
     private void handleSignupButton() {
@@ -58,16 +58,16 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressDialog = new ProgressDialog(SignUpActivity.this);
-                progressDialog.setMessage("Please wait...");
+                progressDialog.setMessage("Vent venligst...");
                 progressDialog.show();
 
-                table_user.addValueEventListener(new ValueEventListener() {
+                tableUser.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Check if key(phone) already exists in OrderDatabase
                         if(dataSnapshot.child(editTextPhone.getText().toString()).exists()) {
                             progressDialog.dismiss();
-                            Common.createToast(SignUpActivity.this, "Phone number already registered");
+                            Common.createToast(SignUpActivity.this, "Denne bruger er allerede registreret!");
                         } else {
                             progressDialog.dismiss();
                             String phoneNumber = editTextPhone.getText().toString();
@@ -79,9 +79,10 @@ public class SignUpActivity extends AppCompatActivity {
                             } else {
                                 // Create new user based on text input values
                                 User newUser = new User(name, password, phoneNumber, email);
+
                                 // Add table to Firebase
-                                table_user.child(editTextPhone.getText().toString()).setValue(newUser);
-                                Common.createToast(SignUpActivity.this, "Registration successful!");
+                                tableUser.child(editTextPhone.getText().toString()).setValue(newUser);
+                                Common.createToast(SignUpActivity.this, "Registrering successful!");
                                 finish();
                             }
                         }

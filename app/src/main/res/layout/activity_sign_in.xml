@@ -67,7 +67,7 @@
         android:backgroundTint="@color/primary_light"
         android:fontFamily="@font/flamabold"
         android:padding="@dimen/margin_large"
-        android:text="Log In"
+        android:text="Log Ind"
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/margin_medium"
         android:textStyle="bold"/>

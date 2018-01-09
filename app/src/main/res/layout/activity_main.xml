@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/secondary_text"
+    android:id="@+id/main_activity_layout"
     tools:context="com.zohdy.maxburger.activities.MainActivity">
 
     <LinearLayout

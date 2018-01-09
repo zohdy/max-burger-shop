@@ -3,16 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/order_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zohdy.maxburger.activities.OrderActivity"
-    android:background="@color/primary">
+    android:background="@color/primary"
+    tools:context="com.zohdy.maxburger.activities.OrderActivity">
+
 
     <android.support.v7.widget.RecyclerView
-        android:background="@android:color/transparent"
         android:id="@+id/rv_orders"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
 
     </android.support.v7.widget.RecyclerView>

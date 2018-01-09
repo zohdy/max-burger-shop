@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import com.travijuu.numberpicker.library.NumberPicker;
 import com.zohdy.maxburger.R;
 import com.zohdy.maxburger.common.Common;
-import com.zohdy.maxburger.database.SQLiteHelper;
+import com.zohdy.maxburger.database.DatabaseHelper;
 import com.zohdy.maxburger.interfaces.Constants;
 import com.zohdy.maxburger.models.Food;
 import com.zohdy.maxburger.models.Order;
@@ -28,19 +28,12 @@ public class FoodDetailActivity extends AppCompatActivity {
     private TextView textViewFoodPrice;
     private TextView textViewFoodDescription;
     private TextView textViewCartBadge;
-
     private ImageView imageViewFoodImage;
     private ImageView imageViewCart;
-
     private Button buttonAddToCart;
-
     private NumberPicker numberPicker;
-
     private String foodId;
-
-    private FirebaseDatabase database;
     private DatabaseReference foodTable;
-
     private Food currentFood = null;
 
 
@@ -49,10 +42,10 @@ public class FoodDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
 
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         foodTable = database.getReference(Constants.FIREBASE_DB_TABLE_FOOD);
 
-        initViews();
+        initLayout();
 
         if(getIntent() != null) {
             foodId = getIntent().getStringExtra(Constants.FOOD_ID);
@@ -60,12 +53,13 @@ public class FoodDetailActivity extends AppCompatActivity {
                 getFoodDetails(foodId);
             }
         }
+
         setupCartBadge();
         handleAddToCartButton();
-        cartImageClicked();
+        handleCartImageClicked();
     }
 
-    private void initViews() {
+    private void initLayout() {
         textViewFoodName = findViewById(R.id.tv_food_name_detail_view);
         textViewFoodDescription = findViewById(R.id.tv_food_description_detail_view);
         textViewFoodPrice = findViewById(R.id.tv_food_price_detail_view);
@@ -80,6 +74,27 @@ public class FoodDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setupCartBadge();
+    }
+
+    // Sets the view based on the food selected
+    private void getFoodDetails(String foodId) {
+        foodTable.child(foodId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentFood = dataSnapshot.getValue(Food.class); // sets the chosen food item, based on the model class
+
+                Picasso.with(getBaseContext())
+                        .load(currentFood.getImage())
+                        .into(imageViewFoodImage);
+                textViewFoodName.setText(currentFood.getName());
+                textViewFoodPrice.setText(currentFood.getPrice()+" kr");
+                textViewFoodDescription.setText(currentFood.getDescription());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     // Handles the little image counter on top of the shopping-cart image
@@ -107,16 +122,16 @@ public class FoodDetailActivity extends AppCompatActivity {
 
     // Gets the foodId, name of food, quantity, price and stores it in SQLite database
     private void addFoodToCart() {
-        SQLiteHelper databaseSQL = SQLiteHelper.getInstance(getApplicationContext());
-        databaseSQL.addOrderToCart(new Order(
-                foodId,
-                currentFood.getName(),
-                String.valueOf(numberPicker.getValue()),
-                currentFood.getPrice()));
+        DatabaseHelper SQLiteDatabase = DatabaseHelper.getInstance(getApplicationContext());
+        SQLiteDatabase.addOrderToCart(
+                new Order(foodId,
+                        currentFood.getName(),
+                        String.valueOf(numberPicker.getValue()),
+                        currentFood.getPrice()));
     }
 
-    private void cartImageClicked() {
-        // Go to shopping cart
+    // Go to shopping cart if basketimage is clicked
+    private void handleCartImageClicked() {
         imageViewCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,25 +141,4 @@ public class FoodDetailActivity extends AppCompatActivity {
         });
     }
 
-    // Sets the view based on the food selected
-    private void getFoodDetails(String foodId) {
-        foodTable.child(foodId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                currentFood = dataSnapshot.getValue(Food.class);
-
-                Picasso.with(getBaseContext())
-                        .load(currentFood.getImage())
-                        .into(imageViewFoodImage);
-
-                textViewFoodName.setText(currentFood.getName());
-                textViewFoodPrice.setText(currentFood.getPrice()+" kr");
-                textViewFoodDescription.setText(currentFood.getDescription());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 }

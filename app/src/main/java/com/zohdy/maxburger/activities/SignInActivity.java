@@ -27,14 +27,9 @@ public class SignInActivity extends AppCompatActivity {
 
     private EditText editTextPhoneNumber;
     private EditText editTextPassWord;
-
     private Button buttonSignIn;
-
-    private FirebaseDatabase database;
-    private DatabaseReference table_user;
-
+    private DatabaseReference tableUser;
     private ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +40,8 @@ public class SignInActivity extends AppCompatActivity {
         editTextPassWord = findViewById(R.id.et_password);
         buttonSignIn = findViewById(R.id.btn_sign_in);
 
-        database = FirebaseDatabase.getInstance();
-        table_user = database.getReference(Constants.FIREBASE_DB_TABLE_USER);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        tableUser = database.getReference(Constants.FIREBASE_DB_TABLE_USER);
 
 
         handleSignInButton();
@@ -58,10 +53,10 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 progressDialog = new ProgressDialog(SignInActivity.this);
-                progressDialog.setMessage("Please wait...");
+                progressDialog.setMessage("Vent venligst...");
                 progressDialog.show();
 
-                table_user.addValueEventListener(new ValueEventListener() {
+                tableUser.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Check if user exist in database
@@ -69,28 +64,29 @@ public class SignInActivity extends AppCompatActivity {
 
                             //Get user values from database and set values as object 'user'
                             User user = dataSnapshot.child(editTextPhoneNumber.getText().toString()).getValue(User.class);
-                            user.setPhoneNumber(editTextPhoneNumber.getText().toString());
+                            if(user != null) {
+                                user.setPhoneNumber(editTextPhoneNumber.getText().toString());
+                            }
                             progressDialog.dismiss();
 
                             // check if user objects password matches with user input
-                            if(user.getPassword().equals(editTextPassWord.getText().toString())) {
+                            if(user != null && user.getPassword().equals(editTextPassWord.getText().toString())) {
                                 Intent homeIntent = new Intent(SignInActivity.this, HomeActivity.class);
                                 Common.currentUser = user;
                                 startActivity(homeIntent);
                                 finish();
 
                             } else {
-                                Common.createToast(SignInActivity.this, "Wrong password");
+                                Common.createToast(SignInActivity.this, "Forkert Password");
                             }
                         } else {
                             // If username (phonenumber) does not exist inside database
                             progressDialog.dismiss();
-                            Common.createToast(SignInActivity.this, "User does not exist in database");
+                            Common.createToast(SignInActivity.this, "Brugeren findes ikke i databasen");
                         }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
             }

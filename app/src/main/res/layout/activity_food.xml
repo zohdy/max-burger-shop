@@ -68,7 +68,10 @@
         android:id="@+id/material_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_small"
+        android:paddingBottom="6dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:paddingTop="@dimen/margin_small"
         app:mt_hint="Hvad søger du...? "
         app:mt_speechMode="false">
 

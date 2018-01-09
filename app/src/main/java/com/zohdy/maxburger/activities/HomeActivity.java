@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,7 @@ import com.squareup.picasso.Picasso;
 import com.zohdy.maxburger.R;
 import com.zohdy.maxburger.common.Common;
 import com.zohdy.maxburger.interfaces.Constants;
-import com.zohdy.maxburger.interfaces.ItemClickListener;
+import com.zohdy.maxburger.interfaces.RecyclerViewItemClickListener;
 import com.zohdy.maxburger.models.Category;
 import com.zohdy.maxburger.viewholders.CategoryViewHolder;
 
@@ -31,17 +32,10 @@ import com.zohdy.maxburger.viewholders.CategoryViewHolder;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView textViewFullName;
-
-    private FirebaseDatabase database;
     private DatabaseReference categoryTable;
     private FirebaseRecyclerAdapter<Category, CategoryViewHolder> recyclerAdapter;
-
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-
     private Toolbar toolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +45,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar_category);
 
         //Initialize Firebase
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         categoryTable = database.getReference(Constants.FIREBASE_DB_TABLE_CATEGORY);
 
-        setupMainLayout();
-        initRecyclerView();
+        initLayout();
+        setupRecyclerView();
 
         loadCategoryMenu();
     }
 
-    private void setupMainLayout() {
+    private void initLayout() {
 
         // Toggle Navigation
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -74,9 +68,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         //Set current logged in user in nav header
         View headerView = navigationView.getHeaderView(0);
-        textViewFullName = headerView.findViewById(R.id.tv_full_name);
+        TextView textViewFullName = headerView.findViewById(R.id.tv_full_name);
         textViewFullName.setText(Common.currentUser.getName());
 
+        // Go directly to cart from homescreen
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,11 +82,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void initRecyclerView() {
+    private void setupRecyclerView() {
         //Init recyclerview
         recyclerView = findViewById(R.id.recyclerview_category);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new GridLayoutManager(this, 2);
+        LayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
     }
 
@@ -104,16 +99,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 categoryTable) {
                     @Override
                     protected void populateViewHolder(CategoryViewHolder categoryViewHolder, final Category category, int position) {
-                        //set name of bevearage category
                         categoryViewHolder.textViewCategoryName.setText(category.getName());
-                        //load image of bevearage into imageview
                         Picasso.with(getBaseContext()).load(category.getImage())
                                 .into(categoryViewHolder.imageViewCategory);
 
-                        categoryViewHolder.setItemClickListener(new ItemClickListener() {
+                        categoryViewHolder.setRecyclerViewItemClickListener(new RecyclerViewItemClickListener() {
                             @Override
                             public void onClick(View view, int position) {
-                                //Get categoryId and send it to the Food Activity
+                                // Go to FoodActivity and pass along extra data for the selected category
                                 Intent foodIntent = new Intent(HomeActivity.this, FoodActivity.class);
                                 foodIntent.putExtra(Constants.CATEGORY_NAME, category.getName());
                                 foodIntent.putExtra(Constants.CATEGORY_DESCRIPTION, category.getDescription());
@@ -133,9 +126,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         switch (id) {
-
             case R.id.nav_cart:
-                // Navigate to  shopping cart
+                // Navigate to shopping cart
                 Intent cartIntent = new Intent(HomeActivity.this, CartActivity.class);
                 startActivity(cartIntent);
 

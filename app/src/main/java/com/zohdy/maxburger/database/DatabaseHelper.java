@@ -18,28 +18,26 @@ import java.util.List;
  * Created by peterzohdy on 15/11/2017.
  */
 
-public class SQLiteHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     //Constants for db name and version
     private static final String DATABASE_NAME = Constants.SQLITE_DB_NAME;
     private static final int DATABASE_VERSION = 2;
-    private static SQLiteHelper databaseInstance = null;
+    private static DatabaseHelper databaseInstance = null;
 
 
     // ******************************* SINGLETON ******************************* //
-
-    public static SQLiteHelper getInstance(Context context) {
+    public static DatabaseHelper getInstance(Context context) {
         if(databaseInstance == null) {
-            databaseInstance = new SQLiteHelper(context.getApplicationContext());
+            databaseInstance = new DatabaseHelper(context.getApplicationContext());
         }
         return databaseInstance;
     }
 
     // Constructor is private
-    private SQLiteHelper(Context context) {
+    private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
     // *******************************************************************************
 
     @Override
@@ -65,9 +63,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
 
-    /**
-     * All CRUD(Create, Read, Update, Delete) Operations
-     */
+
+    // **************** All CRUD(Create, Read, Update, Delete) Operations **************** //
+
     public void addOrderToCart(Order order) {
 
         // Get write access to the database

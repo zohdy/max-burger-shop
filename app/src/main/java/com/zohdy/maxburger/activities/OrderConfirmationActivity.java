@@ -11,8 +11,6 @@ import com.zohdy.maxburger.common.Common;
 
 public class OrderConfirmationActivity extends AppCompatActivity {
 
-    TextView confirmationTextView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,11 +19,14 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_order_confirmation);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        // Removing the title and displaying the back arrow
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
-        confirmationTextView = findViewById(R.id.tv_confirmation);
+        TextView confirmationTextView = findViewById(R.id.tv_confirmation);
         confirmationTextView.setText("Tak " + Common.currentUser.getName() + "!\n\nVi har modtaget din ordre!");
     }
 
@@ -33,6 +34,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         Intent homeActivityIntent = new Intent(OrderConfirmationActivity.this, HomeActivity.class);
         startActivity(homeActivityIntent);
+
         return true;
     }
 }

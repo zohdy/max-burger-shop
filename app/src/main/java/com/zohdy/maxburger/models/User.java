@@ -1,7 +1,5 @@
 package com.zohdy.maxburger.models;
 
-import java.util.ArrayList;
-
 /**
  * Created by peterzohdy on 06/11/2017.
  */

@@ -14,39 +14,27 @@ import com.zohdy.maxburger.common.Common;
 import com.zohdy.maxburger.interfaces.Constants;
 import com.zohdy.maxburger.models.OrderRequest;
 
-import java.util.ArrayList;
-
 public class OrderService extends Service {
 
-    String orderId;
 
-    private FirebaseDatabase database;
     private DatabaseReference orderRequestTable;
-    private DatabaseReference orderHistoryTable;
 
-    private ArrayList<String> orderIdList;
     private OrderRequest selectedOrderRequest;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        orderIdList = new ArrayList<>();
-
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         orderRequestTable = database.getReference(Constants.FIREBASE_DB_TABLE_ORDER_REQUESTS);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if(intent.getExtras() != null && !intent.getExtras().isEmpty()) {
-            orderId = intent.getExtras().getString(Constants.ORDER_ID);
-            orderIdList.add(orderId);
-        }
-
         handleOrder();
 
+        // system will try to re-create service after it is killed
         return START_STICKY;
     }
 
@@ -58,11 +46,13 @@ public class OrderService extends Service {
 
             }
 
+            // If a value is changed in a child node of the orderRequestTable
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
                 selectedOrderRequest = dataSnapshot.getValue(OrderRequest.class);
 
+                // Start the OrderReady activity whenever status is changed
                 if (selectedOrderRequest != null && selectedOrderRequest.getStatus().equals("1")) {
                     String orderId = dataSnapshot.getKey();
                     startOrderReadyActivity(orderId);

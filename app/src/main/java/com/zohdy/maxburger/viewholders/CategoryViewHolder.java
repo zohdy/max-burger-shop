@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zohdy.maxburger.R;
-import com.zohdy.maxburger.interfaces.ItemClickListener;
+import com.zohdy.maxburger.interfaces.RecyclerViewItemClickListener;
 
 /**
  * Created by peterzohdy on 06/11/2017.
@@ -15,10 +15,8 @@ import com.zohdy.maxburger.interfaces.ItemClickListener;
 public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView textViewCategoryName;
-
     public ImageView imageViewCategory;
-
-    private ItemClickListener itemClickListener;
+    private RecyclerViewItemClickListener recyclerViewItemClickListener;
 
     public CategoryViewHolder(View itemView) {
         super(itemView);
@@ -28,13 +26,13 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
         itemView.setOnClickListener(this);
     }
 
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+    public void setRecyclerViewItemClickListener(RecyclerViewItemClickListener recyclerViewItemClickListener) {
+        this.recyclerViewItemClickListener = recyclerViewItemClickListener;
     }
 
     @Override
     public void onClick(View view) {
-        itemClickListener.onClick(view, getAdapterPosition());
+        recyclerViewItemClickListener.onClick(view, getAdapterPosition());
     }
 }
 
