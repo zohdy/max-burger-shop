@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
                 progressDialog.setMessage("Vent venligst...");
                 progressDialog.show();
 
-                tableUser.addValueEventListener(new ValueEventListener() {
+                tableUser.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Check if key(phone) already exists in OrderDatabase
@@ -83,7 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
                                 // Add table to Firebase
                                 tableUser.child(editTextPhone.getText().toString()).setValue(newUser);
                                 Common.createToast(SignUpActivity.this, "Registrering successful!");
-                                finish();
                             }
                         }
                     }
