@@ -62,8 +62,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-
-
     // **************** All CRUD(Create, Read, Update, Delete) Operations **************** //
 
     public void addOrderToCart(Order order) {

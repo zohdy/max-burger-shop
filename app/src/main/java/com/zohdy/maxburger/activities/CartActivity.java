@@ -2,6 +2,7 @@ package com.zohdy.maxburger.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import com.zohdy.maxburger.models.OrderRequest;
 
 import java.util.List;
 
+import static android.content.SharedPreferences.*;
+
 public class CartActivity extends AppCompatActivity {
 
     private TextView textViewTotalAmount;
@@ -35,7 +38,8 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DatabaseReference orderRequestTable;
     private DatabaseHelper databaseHelper;
-
+    SharedPreferences sharedPreferences;
+    Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +48,16 @@ public class CartActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         orderRequestTable = database.getReference(Constants.FIREBASE_DB_TABLE_ORDER_REQUESTS);
+        sharedPreferences = getApplicationContext().getSharedPreferences(Constants.MAX_BURGER_PREFS, 0);
 
         initLayout();
         setRecyclerView();
 
         loadFoodListOrder();
         handlePlaceOrderClick();
+
     }
+
 
     private void initLayout() {
         textViewTotalAmount = findViewById(R.id.tv_total_amount);
@@ -122,13 +129,16 @@ public class CartActivity extends AppCompatActivity {
         // Handles the trash/delete icon on the recycler item
         cartAdapter.setOnRecyclerViewClicklickListener(new RecyclerViewItemClickListener() {
             @Override
-            public void onClick(View view, int position) {
+            public void onRecyclerItemClick(View view, int position) {
                 databaseHelper = DatabaseHelper.getInstance(CartActivity.this);
                 databaseHelper.deleteOrderItem(cart, position);
 
                 // Update the counter on the cartImage correctly
                 int numOfItemsToRemove = Integer.parseInt(cart.get(position).getQuantity());
-                Common.badgeCounter -= numOfItemsToRemove;
+                int currentBadgeCounter = sharedPreferences.getInt(Constants.BADGE_COUNTER, 0);
+                currentBadgeCounter -= numOfItemsToRemove;
+                // Common.createToast(getApplicationContext(), "current badgecounter is " + currentBadgeCounter);
+                setBadgeCounterValue(currentBadgeCounter);
 
                 // By calling the same method again it recalculates the price and remove the cart item from the list
                 loadFoodListOrder();
@@ -153,9 +163,14 @@ public class CartActivity extends AppCompatActivity {
         databaseHelper.clearCart();
 
         // set badgecounter back to 0
-        Common.badgeCounter = 0;
+        setBadgeCounterValue(0);
     }
 
+    private void setBadgeCounterValue(int value) {
+        editor = sharedPreferences.edit();
+        editor.putInt(Constants.BADGE_COUNTER, value);
+        editor.apply();
+    }
 }
 
 

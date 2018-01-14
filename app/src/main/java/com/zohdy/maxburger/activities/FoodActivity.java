@@ -181,7 +181,7 @@ public class FoodActivity extends AppCompatActivity {
 
                 foodViewHolder.setRecyclerViewItemClickListener(new RecyclerViewItemClickListener() {
                     @Override
-                    public void onClick(View view, int position) {
+                    public void onRecyclerItemClick(View view, int position) {
                         Intent foodDetail = new Intent(FoodActivity.this, FoodDetailActivity.class);
                         foodDetail.putExtra(Constants.FOOD_ID, searchBarRecyclerAdapter.getRef(position).getKey());
                         startActivity(foodDetail);
@@ -201,7 +201,7 @@ public class FoodActivity extends AppCompatActivity {
                 R.layout.item_food,
                 FoodViewHolder.class,
                 // Display the items where menuId in foodTable is identical to the categoryId passed in from the intent extra
-                foodTable.orderByChild("menuId").equalTo(categoryId)) {
+                foodTable.orderByChild(Constants.FIREBASE_DB_TABLE_FOOD_KEY_MENU_ID).equalTo(categoryId)) {
             @Override
             protected void populateViewHolder(FoodViewHolder foodViewHolder, final Food food, int position) {
                 foodViewHolder.textViewFood.setText(food.getName());
@@ -210,7 +210,7 @@ public class FoodActivity extends AppCompatActivity {
 
                 foodViewHolder.setRecyclerViewItemClickListener(new RecyclerViewItemClickListener() {
                     @Override
-                    public void onClick(View view, int position) {
+                    public void onRecyclerItemClick(View view, int position) {
                         Intent foodDetail = new Intent(FoodActivity.this, FoodDetailActivity.class);
                         foodDetail.putExtra(Constants.FOOD_ID, foodListRecyclerAdapter.getRef(position).getKey());
                         startActivity(foodDetail);

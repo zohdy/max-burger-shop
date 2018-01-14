@@ -16,9 +16,7 @@ import com.zohdy.maxburger.models.OrderRequest;
 
 public class OrderService extends Service {
 
-
     private DatabaseReference orderRequestTable;
-
     private OrderRequest selectedOrderRequest;
 
     @Override
@@ -75,7 +73,6 @@ public class OrderService extends Service {
                 }
             });
     }
-
 
     private void startOrderReadyActivity(String orderReadyId) {
         Intent orderReadyIntent = new Intent(this, OrderReadyActivity.class);

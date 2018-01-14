@@ -9,5 +9,5 @@ import android.view.View;
 // This interface is used to attach a callback to an item click in a Recyclerview
 public interface RecyclerViewItemClickListener {
 
-    void onClick(View view, int position);
+    void onRecyclerItemClick(View view, int position);
 }

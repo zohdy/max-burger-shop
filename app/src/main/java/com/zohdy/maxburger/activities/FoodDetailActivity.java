@@ -1,6 +1,8 @@
 package com.zohdy.maxburger.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.travijuu.numberpicker.library.NumberPicker;
 import com.zohdy.maxburger.R;
-import com.zohdy.maxburger.common.Common;
 import com.zohdy.maxburger.database.DatabaseHelper;
 import com.zohdy.maxburger.interfaces.Constants;
 import com.zohdy.maxburger.models.Food;
@@ -35,6 +36,9 @@ public class FoodDetailActivity extends AppCompatActivity {
     private String foodId;
     private DatabaseReference foodTable;
     private Food currentFood = null;
+    private int badgeCounter = 0;
+    SharedPreferences sharedPreferences;
+    Editor editor;
 
 
     @Override
@@ -53,6 +57,9 @@ public class FoodDetailActivity extends AppCompatActivity {
                 getFoodDetails(foodId);
             }
         }
+
+        sharedPreferences = getApplicationContext().getSharedPreferences(Constants.MAX_BURGER_PREFS, 0);
+        badgeCounter = sharedPreferences.getInt(Constants.BADGE_COUNTER, 0);
 
         setupCartBadge();
         handleAddToCartButton();
@@ -73,6 +80,8 @@ public class FoodDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        sharedPreferences = getApplicationContext().getSharedPreferences(Constants.MAX_BURGER_PREFS, 0);
+        badgeCounter = sharedPreferences.getInt(Constants.BADGE_COUNTER, 0);
         setupCartBadge();
     }
 
@@ -99,9 +108,8 @@ public class FoodDetailActivity extends AppCompatActivity {
 
     // Handles the little image counter on top of the shopping-cart image
     private void setupCartBadge() {
-
-        if (Common.badgeCounter != 0) {
-            textViewCartBadge.setText(String.valueOf(Common.badgeCounter));
+        if (badgeCounter != 0) {
+            textViewCartBadge.setText(String.valueOf(badgeCounter));
         } else {
             // Hide the badgecounter if the value is 0
             textViewCartBadge.setVisibility(View.GONE);
@@ -112,10 +120,11 @@ public class FoodDetailActivity extends AppCompatActivity {
         buttonAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Common.badgeCounter += numberPicker.getValue();
+                    badgeCounter += numberPicker.getValue();
                     textViewCartBadge.setVisibility(View.VISIBLE);
-                    textViewCartBadge.setText(String.valueOf(Common.badgeCounter));
+                    textViewCartBadge.setText(String.valueOf(badgeCounter));
                     addFoodToCart();
+                    saveBadgeCounterValue();
             }
         });
     }
@@ -141,4 +150,9 @@ public class FoodDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void saveBadgeCounterValue() {
+        editor = sharedPreferences.edit();
+        editor.putInt(Constants.BADGE_COUNTER, badgeCounter);
+        editor.apply();
+    }
 }

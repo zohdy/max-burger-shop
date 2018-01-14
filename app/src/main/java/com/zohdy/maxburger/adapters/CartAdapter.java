@@ -59,6 +59,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
 
+    // Inner Class
     public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView textViewCartName;
@@ -80,7 +81,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         @Override
         public void onClick(View view) {
             if(recyclerViewItemClickListener != null) {
-                recyclerViewItemClickListener.onClick(view, getAdapterPosition());
+                recyclerViewItemClickListener.onRecyclerItemClick(view, getAdapterPosition());
             }
         }
     }

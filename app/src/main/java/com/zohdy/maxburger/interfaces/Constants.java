@@ -7,12 +7,17 @@ package com.zohdy.maxburger.interfaces;
 public interface Constants {
 
 
+    // SharedPreferences
+    String MAX_BURGER_PREFS = "max_burger_prefs";
+    String BADGE_COUNTER = "badge_counter";
+
     // Firebase DB Related
     String FIREBASE_DB_TABLE_FOOD = "Food";
     String FIREBASE_DB_TABLE_USER = "User";
     String FIREBASE_DB_TABLE_CATEGORY = "Category";
     String FIREBASE_DB_TABLE_ORDER_REQUESTS = "OrderRequest";
     String FIREBASE_DB_TABLE_ORDER_HISTORY = "OrderHistory";
+    String FIREBASE_DB_TABLE_FOOD_KEY_MENU_ID = "menuId";
 
     String FIREBASE_DB_DATA_PHONENUMBER = "phoneNumber";
 

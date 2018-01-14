@@ -105,7 +105,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                         categoryViewHolder.setRecyclerViewItemClickListener(new RecyclerViewItemClickListener() {
                             @Override
-                            public void onClick(View view, int position) {
+                            public void onRecyclerItemClick(View view, int position) {
                                 // Go to FoodActivity and pass along extra data for the selected category
                                 Intent foodIntent = new Intent(HomeActivity.this, FoodActivity.class);
                                 foodIntent.putExtra(Constants.CATEGORY_NAME, category.getName());

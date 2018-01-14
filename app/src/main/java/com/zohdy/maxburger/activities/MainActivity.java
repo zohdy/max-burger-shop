@@ -2,6 +2,8 @@ package com.zohdy.maxburger.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
@@ -12,19 +14,26 @@ import android.widget.Button;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.zohdy.maxburger.R;
-import com.zohdy.maxburger.common.Common;
 import com.zohdy.maxburger.database.DatabaseHelper;
+import com.zohdy.maxburger.interfaces.Constants;
+import com.zohdy.maxburger.models.Order;
 import com.zohdy.maxburger.services.OrderService;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button buttonSignIn;
     private Button buttonSignUp;
+    SharedPreferences sharedPreferences;
+    Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getApplicationContext().getSharedPreferences(Constants.MAX_BURGER_PREFS, 0);
 
         initLayout();
 
@@ -34,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
             // For offline sync
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-            // Clear any items in shopping cart when app is restarted
-            DatabaseHelper databaseHelper = DatabaseHelper.getInstance(MainActivity.this);
-            databaseHelper.clearCart();
+            // If shopping cart is not empty
+            retrieveBadgeCounterValue();
 
             setupClickListeners();
             startOrderService();
@@ -86,4 +94,18 @@ public class MainActivity extends AppCompatActivity {
         return (netInfo != null && netInfo.isConnected());
     }
 
+
+    private void retrieveBadgeCounterValue() {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(MainActivity.this);
+        List<Order> currentCart = databaseHelper.getItemsInCart();
+        int badgeCounterValue = 0;
+
+        for (Order order : currentCart) {
+            badgeCounterValue += (Integer.parseInt(order.getQuantity()));
+        }
+
+        editor = sharedPreferences.edit();
+        editor.putInt(Constants.BADGE_COUNTER, badgeCounterValue);
+        editor.apply();
+    }
 }

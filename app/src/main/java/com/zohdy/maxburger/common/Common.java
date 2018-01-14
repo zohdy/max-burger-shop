@@ -13,11 +13,9 @@ import com.zohdy.maxburger.models.User;
 
 public class Common {
 
+    // TODO Refactor to singleton or application class?!
     // Static variable to hold the current user
     public static User currentUser;
-
-    // Need a reference to this value in both Cart and FoodDetailActivity
-    public static int badgeCounter = 0;
 
 
     public static void createToast(Context context, String textInput) {

@@ -1,5 +1,9 @@
 package com.zohdy.maxburger.models;
 
+import android.content.Context;
+
+import com.zohdy.maxburger.database.DatabaseHelper;
+
 /**
  * Created by peterzohdy on 06/11/2017.
  */
@@ -9,6 +13,7 @@ public class User {
     private String password;
     private String phoneNumber;
     private String email;
+    // private static User currentUser = null;
 
     public User(String name, String password, String phoneNumber, String email) {
         this.email = email;
@@ -19,6 +24,15 @@ public class User {
 
     public User() {
     }
+
+    /*
+    public static User getCurrentUser(Context context) {
+        if(currentUser == null) {
+            currentUser = new User();
+        }
+        return currentUser;
+    }
+    */
 
     public String getPhoneNumber() {
         return phoneNumber;
